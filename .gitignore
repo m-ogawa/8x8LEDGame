@@ -1,2 +1,7 @@
 ./BreakoutGame
 ./LedMatrixGame
+.vscode/c_cpp_properties.json
+.vscode/arduino.json
+LedMatrixGame/assets/game-preview.jpg
+LedMatrixGame/README.md
+LedMatrixGame/LedMatrixGame.ino
