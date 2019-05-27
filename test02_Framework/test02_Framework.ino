@@ -1,3 +1,6 @@
+//Framework
+//made Framework and roulette game.
+
 
 //Pin Assign
 #define DOT_DIN   12

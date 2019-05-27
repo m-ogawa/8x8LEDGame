@@ -1,5 +1,5 @@
-//test
-
+//addGame
+//add the brakeout game
 
 //Pin Assign
 #define DOT_DIN   12
@@ -13,13 +13,22 @@
 //Delay time(msec)
 #define LOOP_DELAYTIME  5
 #define ROULETTE_TIME 5
+#define BREAKOUT_TIME 5
 
 unsigned int loop_count = 0;    //loop counter
 unsigned char gamestatus = 0;   //Game Status Number
 byte keyinput[2] = {0,0};
 unsigned char selected = 1;
-unsigned char roulettestatus = 0;
+
+//roulette
+unsigned char roulette_status = 0;
 unsigned char roulette_num = 0;
+
+//breakout
+unsigned char breakout_map[10][10];
+unsigned char breakout_status = 0;
+unsigned char breakout_direction[2];
+
 
 
 void putByte( byte data ) {
@@ -87,7 +96,7 @@ void loop( ) {
         if(selected>1) selected--;
       }
       if( (keyinput[1]&2) > (keyinput[0]&2) ){    //push B
-        if(selected<3) selected++;
+        if(selected<2) selected++;
       }
       if( (keyinput[1]&4) > (keyinput[0]&4) ){    //push C
         if(selected != 1) break;                  //Now there is only one game...
@@ -96,16 +105,25 @@ void loop( ) {
       break;
     case 1:   //No.1 Fortune roulette
       if( (keyinput[1]&4) > (keyinput[0]&4) ){    //push C
-        if(!roulettestatus) roulettestatus = 1;   //stop rolling
+        if(!roulette_status) roulette_status = 1;   //stop rolling
         else gameInit(0);                         //reset game
       }
-      if(!roulettestatus){    //rolling...
+      if(!roulette_status){    //rolling...
         if(loop_count % ROULETTE_TIME == 0){        //refresh random value
           int i = random(10);
           while(i == roulette_num) i = random(10);
           roulette_num = i;
         }
       }
+      break;
+    case 2:   //No.2 Breakout Game
+      if( (keyinput[1]&1) > (keyinput[0]&1) ){    //push A
+      }
+      if( (keyinput[1]&2) > (keyinput[0]&2) ){    //push B
+      }
+      if( (keyinput[1]&4) > (keyinput[0]&4) ){    //push C
+      }
+      progressBreakout();
       break;
   }
 
@@ -117,6 +135,9 @@ void loop( ) {
     case 1:   //No.1 Fortune roulette
       displayRoulette(roulette_num);
       break;
+    case 2:   //No.2 Breakout Game
+      displayBreakout();
+      break;
   }
 
   //loop count & delay
@@ -127,10 +148,48 @@ void loop( ) {
 void gameInit(int __selected){
   gamestatus = __selected;
   switch(gamestatus){
-    case 1:
+    case 1:   //No.1 Fortune roulette
       roulette_num = random(10);
-      roulettestatus = 0;
-    break;
+      roulette_status = 0;
+      break;
+    case 2:   //No.2 Breakout Game
+      breakout_direction[0] = 0;
+      breakout_direction[1] = 0;
+      breakout_status = 0;
+      for(int i=0;i<10;i++) for(int j=0;j<10;j++) breakout_map[i][j] = 0;
+      for(int i=0;i<10;i++){
+        breakout_map[i][0] = -1;
+        breakout_map[i][9] = -1;
+        breakout_map[0][i] = -1;
+        breakout_map[9][i] = -1;
+      }
+      break;
+  }
+}
+
+void progressBreakout(void){
+  switch(breakout_status){
+    case 0:   //Before Start
+      break;
+    case 1:   //Playing
+      break;
+    case 2:   //Game End (Complete)
+      break;
+    case 3:   //Game Over
+      break;
+  }
+}
+
+void displayBreakout(void){
+  switch(breakout_status){
+    case 0:   //Before Start
+      break;
+    case 1:   //Playing
+      break;
+    case 2:   //Game End (Complete)
+      break;
+    case 3:   //Game Over
+      break;
   }
 }
 
